@@ -15,6 +15,7 @@ import { ImWhatsapp } from "react-icons/im";
 import { Progress } from "@chakra-ui/react";
 import { useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
+import Image from "next/image";
 
 function Wrapper({ children }) {
 	return (
@@ -51,69 +52,104 @@ export default function Share({ setStep }) {
 			transition={{ duration: 0.5 }}
 			py={12}
 		>
-			<VStack spacing={2} textAlign='center'>
-				<Heading as='h1' color={"green"} fontSize='4xl'>
-					Congratulations!
-				</Heading>
-				<Text fontSize='lg' color={"gray.500"}>
-					share with 5 people via whatsapp to unlock the discount
-				</Text>
-			</VStack>
-			<Stack
-				direction={{ base: "column", md: "row" }}
-				textAlign='center'
-				justify='center'
-				spacing={{ base: 4, lg: 10 }}
-				py={10}
-			>
-				<Wrapper>
-					<Box position='relative'>
-						<Box py={4} px={8}>
-							<Progress
-								as={motion.div}
-								borderRadius={"xl"}
-								hasStripe
-								value={100}
-								initial={0}
-								variants={valueVariant}
-								animate={valueVariant[clicks]}
-							></Progress>
-						</Box>
-						<Box>
-							{/* show progress*/}
-							<Box fontSize='2xl' fontWeight='bold' color='green.500'>
-								{clicks}/5
-							</Box>
-						</Box>
-						<VStack
-							bg={useColorModeValue("gray.50", "gray.700")}
-							py={4}
-							borderBottomRadius={"xl"}
-						>
-							<Box w='80%' pt={5}>
-								<Button
-									w='full'
-									leftIcon={<ImWhatsapp></ImWhatsapp>}
-									colorScheme='green'
-									onClick={() => {
-										//share to whatsapp
-										window.open("https://wa.me/?text=Hello%20World");
-										setClicks((prev) => {
-											if (prev < 5) {
-												return prev + 1;
-											} else {
-												return prev;
-											}
-										});
-									}}
+			{clicks < 5 ? (
+				<>
+					<VStack spacing={2} textAlign='center'>
+						<Heading as='h1' color={"green"} fontSize='4xl'>
+							Congratulations!
+						</Heading>
+						<Text fontSize='lg' color={"gray.500"}>
+							share with 5 people via whatsapp to unlock the discount
+						</Text>
+					</VStack>
+					<Stack
+						direction={{ base: "column", md: "row" }}
+						textAlign='center'
+						justify='center'
+						spacing={{ base: 4, lg: 10 }}
+						py={10}
+					>
+						<Wrapper>
+							<Box position='relative'>
+								<Box py={4} px={8}>
+									<Progress
+										as={motion.div}
+										borderRadius={"xl"}
+										hasStripe
+										value={100}
+										initial={0}
+										variants={valueVariant}
+										animate={valueVariant[clicks]}
+									></Progress>
+								</Box>
+								<Box>
+									{/* show progress*/}
+									<Box fontSize='2xl' fontWeight='bold' color='green.500'>
+										{clicks}/5
+									</Box>
+								</Box>
+								<VStack
+									bg={useColorModeValue("gray.50", "gray.700")}
+									py={4}
+									borderBottomRadius={"xl"}
 								>
-									Share
-								</Button>
+									<Box w='80%' pt={5}>
+										<Button
+											w='full'
+											leftIcon={<ImWhatsapp></ImWhatsapp>}
+											colorScheme='green'
+											onClick={() => {
+												//share to whatsapp
+												window.open("https://wa.me/?text=Hello%20World");
+												setClicks((prev) => {
+													if (prev < 5) {
+														return prev + 1;
+													} else {
+														return prev;
+													}
+												});
+											}}
+										>
+											Share
+										</Button>
+									</Box>
+								</VStack>
 							</Box>
-						</VStack>
-					</Box>
-				</Wrapper>
-			</Stack>
+						</Wrapper>
+					</Stack>
+				</>
+			) : (
+				<>
+					<VStack spacing={2} textAlign='center'>
+						<Heading as='h1' color={"green"} fontSize='4xl'>
+							Congratulations!
+						</Heading>
+						<Text fontSize='lg' color={"gray.500"}>
+							You have unlocked the discount
+						</Text>
+					</VStack>
+					<Stack
+						direction={{ base: "column", md: "row" }}
+						textAlign='center'
+						justify='center'
+						spacing={{ base: 4, lg: 10 }}
+						py={10}
+					>
+						<Wrapper>
+							<Image
+								src='/discount.png'
+								alt='image'
+								width={640}
+								height={360}
+								style={{
+									width: "100%",
+								}}
+								borderRadius='xl'
+							></Image>
+						</Wrapper>
+					</Stack>
+				</>
+			)}
 		</Box>
 	);
 }
